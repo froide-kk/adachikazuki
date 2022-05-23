@@ -1,0 +1,10 @@
+create table `User`(
+    id integer not null auto_increment primary key,
+    name varchar(255),
+    password varchar(255)
+);
+insert into `User` values(101, 'Tanaka', 'password');
+insert into `User` values(102, 'Suzuki', 'password');
+insert into `User` values(103, 'Satou', 'password');
+insert into `User` values(104, 'Murata', 'password');
+insert into `User` values(105, 'Sakamoto', 'password');

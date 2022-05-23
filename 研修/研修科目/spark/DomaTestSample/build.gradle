@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'com.h2database:h2:2.1.210'
+    implementation 'com.sparkjava:spark-core:2.9.3'
+    implementation 'com.sparkjava:spark-template-freemarker:2.7.1'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+    annotationProcessor 'org.seasar.doma:doma-processor:2.51.0'
+    implementation 'org.seasar.doma:doma-core:2.51.0'
+    implementation 'org.seasar.doma:doma-slf4j:2.51.0'
+    implementation 'mysql:mysql-connector-java:8.0.28'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
+task copyDomaResources(type: Sync) {
+    // SQLコピー
+    from sourceSets.main.resources.srcDirs
+    println 'SQLファイルのコピー元'
+    println sourceSets.main.resources.srcDirs
+    into compileJava.destinationDir
+    println 'SQLファイルのコピー先'
+    println compileJava.destinationDir
+
+    include 'doma.compile.config'
+    include 'META-INF/**/*.sql'
+    include 'META-INF/**/*.script'
+}
+
+compileJava {
+    dependsOn copyDomaResources
+    options.encoding = 'UTF-8'
+}
+
+compileTestJava {
+    dependsOn copyDomaResources
+    options.encoding = 'UTF-8'
+}
